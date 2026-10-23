@@ -15,7 +15,6 @@ const faq = [
   ["Bagaimana cara mengambil pesanan?", "Pesanan yang sudah selesai muncul di tab Siap Diambil pada Dashboard, lalu diambil di Kampus UBSI Cikarang."],
 ];
 export default function Home() {
-  const flora = products.filter((p) => p.type === "Flora" && p.kind !== "Paket").length;
   return (
     <>
       <section className="hero">
@@ -41,8 +40,8 @@ export default function Home() {
       <section className="wrap">
         <h2>Dua dunia relik</h2>
         <div className="grid two">
-          <Link href="/lore" className="card"><h3>Flora</h3><p className="muted">{flora} relik tanaman mistis, dari bunga bulan sampai teratai senja.</p></Link>
-          <Link href="/lore" className="card"><h3>Fauna</h3><p className="muted">{products.filter((p) => p.type === "Fauna" && p.kind !== "Paket").length} relik makhluk penjaga yang tercatat di The Codex.</p></Link>
+          <Link href="/lore" className="card"><h3>Flora</h3><p className="muted">Maple, Pinus, dan Spiderlili, tiga relik tanaman dalam satu tema.</p></Link>
+          <Link href="/lore" className="card"><h3>Fauna</h3><p className="muted">Kelinci, Pegasus, dan Rubah, tiga relik makhluk yang tercatat di The Codex.</p></Link>
         </div>
       </section>
       <section className="wrap">

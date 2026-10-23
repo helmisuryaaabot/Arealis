@@ -28,5 +28,18 @@ function Member({ m, delay }) {
   );
 }
 export default function TeamShowcase() {
-  return <div className="team">{team.map((m, k) => <Member key={m.name} m={m} delay={800 + k * 900} />)}</div>;
+  return (
+    <div className="team">
+      {team.map((m, k) => (
+        <div className="tm" key={m.name}>
+          <Member m={m} delay={800 + k * 900} />
+          <div className="card contact">
+            <a href={"https://wa.me/" + m.wa}>WA +{m.wa}</a>
+            <a href={"mailto:" + m.email}>{m.email}</a>
+            <a href={"https://instagram.com/" + m.ig}>IG @{m.ig}</a>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 }

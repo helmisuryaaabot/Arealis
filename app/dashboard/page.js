@@ -15,7 +15,7 @@ export default function Dashboard() {
   return (
     <section className="wrap">
       <h1>Pesanan saya</h1>
-      <p className="muted">Masuk sebagai {user.name}{user.phone ? ", WA " + user.phone : ""}. Daftar pesanan di bawah masih data contoh.</p>
+      <p className="muted">Masuk sebagai {user.name} ({user.email}). Daftar pesanan di bawah masih data contoh.</p>
       <div className="tabs">
         {["Proses", "Siap Diambil"].map((t) => (
           <button key={t} className={tab === t ? "on" : ""} onClick={() => setTab(t)}>{t} ({mine.filter((o) => o.status === t).length})</button>

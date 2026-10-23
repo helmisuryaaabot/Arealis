@@ -11,16 +11,17 @@ function Row({ p, n }) {
         {p.image ? <img src={p.image} alt={p.name} /> : <div className="ph"><span>{sigil(p.type)}</span><small>Foto {p.name}</small></div>}
       </div>
       <div className={"arcwrap" + (open ? " open" : "")}>
-        <aside className="lore" aria-hidden={!open}>
-          <h3>Kisah {p.name}</h3>
-          <p>{p.lore}</p>
+        <aside className="lore hex" aria-hidden={!open}>
+          <div className="in"><h3>Kisah {p.name}</h3><p>{p.lore}</p></div>
         </aside>
-        <button className="arcana" aria-expanded={open} onClick={() => setOpen(!open)}>
-          <span className="num">{ROMAN[n]}</span>
-          <span className="moon">☾</span>
-          <span className="aname">{p.name}</span>
-          <span className="akind">{p.kind} {p.type}</span>
-          <span className="hint">{open ? "Tutup kisah" : "Buka kisah"}</span>
+        <button className="arcana hex" aria-expanded={open} onClick={() => setOpen(!open)}>
+          <span className="in">
+            <span className="num">{ROMAN[n]}</span>
+            <span className="moon">☾</span>
+            <span className="aname">{p.name}</span>
+            <span className="akind">{p.kind} {p.type}</span>
+            <span className="hint">{open ? "Tutup kisah" : "Buka kisah"}</span>
+          </span>
         </button>
       </div>
     </div>
