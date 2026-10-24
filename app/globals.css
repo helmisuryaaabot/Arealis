@@ -127,3 +127,10 @@ h1{font-size:30px}
 .moon{font-size:44px}.aname{font-size:15px}.num{font-size:16px}.akind,.hint{font-size:11px}
 .lore h3{font-size:16px}.lore p{font-size:13px;line-height:1.45}
 }
+.shelf{margin:40px 0}
+.shelf-head{display:flex;align-items:center;gap:16px;margin:0 0 18px;font-size:30px}
+.shelf-head::before,.shelf-head::after{content:"";flex:1;height:1px;background:var(--line)}
+.shelf-head span{border:3px double var(--gold);padding:4px 28px}
+.shelfgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding-bottom:18px;border-bottom:8px solid #2b2233;box-shadow:0 8px 0 #1a1522}
+.shelfgrid .row{flex-wrap:wrap}
+@media(max-width:900px){.shelfgrid{grid-template-columns:repeat(2,1fr)}.shelfgrid .card{padding:12px}.shelfgrid .spec{display:none}.shelf-head{font-size:24px}}

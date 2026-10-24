@@ -10,7 +10,7 @@ export default function Navbar() {
   const { user, ready, logout } = useAuth();
   const [open, setOpen] = useState(false);
   useEffect(() => setOpen(false), [path]);
-  const links = user && user.isAdmin ? [...base, ["/admin", "Admin"]] : base;
+  const links = base; // halaman /admin sengaja tidak ditautkan di menu; dibuka lewat alamat langsung
   const out = () => { logout(); setOpen(false); router.push("/"); };
   return (
     <>
