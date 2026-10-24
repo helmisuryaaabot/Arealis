@@ -7,3 +7,6 @@ Ganti data produk di `data/products.js`. Teks lore di `app/lore/page.js`, cerita
 Login masih simulasi (disimpan di browser). Tombol Google membuat akun contoh (juga admin demo, buka /admin lewat alamat langsung, tidak ada tautan di menu).
 Verifikasi WhatsApp: tombol membuka chat ke nomor admin (anggota ke-2 di data/team.js); tombol Demo mengganti konfirmasi admin.
 Semua diganti Supabase di tahap 2.
+
+## Tampilan
+Banner Home ada di data/banners.js (isi image dengan foto dari public/banner). Link sosial ada di data/social.js.

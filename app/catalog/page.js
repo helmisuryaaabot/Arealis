@@ -18,11 +18,10 @@ export default function Catalog() {
   };
   return (
     <section className="wrap">
-      <h1>Relic Forge &amp; Store</h1>
-      <p className="muted">Delapan relik akrilik 3mm, diukir laser dan diisi cat metalik. Semua dibuat berdasarkan pesanan (Pre-Order).</p>
+      <div className="pagebanner"><h1>Relic Forge &amp; Store</h1><p>Delapan relik akrilik 3mm, diukir laser dan diisi cat metalik. Semua dibuat berdasarkan pesanan (Pre-Order).</p></div>
       {ready && !user && <p className="note">Login atau Sign Up dulu untuk melakukan Pre-Order.</p>}
       {SHELVES.map((t) => (
-        <div className="shelf" key={t}>
+        <div className="shelf" id={t.toLowerCase()} key={t}>
           <h2 className="shelf-head"><span>{t}</span></h2>
           <div className="shelfgrid">
             {KINDS.map((k) => {

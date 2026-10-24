@@ -30,10 +30,12 @@ function Row({ p, n }) {
 export default function Lore() {
   const singles = products.filter((p) => p.kind !== "Paket");
   return (
+    <div className="band dark">
     <section className="wrap">
       <h1>Jurnal sang peneliti</h1>
       <p className="muted">[Naskah pengantar The Codex dari tim konten.] Setiap relik membawa satu kartu arcana. Buka kartunya untuk membaca kisah di baliknya. Dua paket kami berisi gabungan gelang, kalung, dan keychain dari tema yang sama.</p>
       {singles.map((p, n) => <Row key={p.id} p={p} n={n} />)}
     </section>
+    </div>
   );
 }
