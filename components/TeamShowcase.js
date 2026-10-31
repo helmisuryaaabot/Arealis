@@ -29,6 +29,8 @@ function Member({ m, delay }) {
 }
 export default function TeamShowcase() {
   return (
+    <>
+    <p className="swipehint">Geser ke samping untuk melihat anggota lain →</p>
     <div className="team">
       {team.map((m, k) => (
         <div className="tm" key={m.name}>
@@ -41,5 +43,6 @@ export default function TeamShowcase() {
         </div>
       ))}
     </div>
+    </>
   );
 }

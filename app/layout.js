@@ -6,10 +6,12 @@ import AuthProvider from "../components/AuthProvider";
 import FloatingSocial from "../components/FloatingSocial";
 import { IG, TT } from "../data/social";
 const font = Plus_Jakarta_Sans({ subsets: ["latin"], weight: ["400", "600", "700", "800"], variable: "--f-body" });
+const themeScript = 'try{if(localStorage.getItem("arealis-theme")==="dark")document.documentElement.dataset.theme="dark"}catch(e){}';
 export const metadata = { title: "AREALIS", description: "Aksesori akrilik ukir laser dengan cerita flora dan fauna" };
 export default function RootLayout({ children }) {
   return (
-    <html lang="id" className={font.variable}>
+    <html lang="id" className={font.variable} suppressHydrationWarning>
+      <head><script dangerouslySetInnerHTML={{ __html: themeScript }} /></head>
       <body>
         <AuthProvider>
           <div className="announce">Pre-Order dibuka. Pengambilan pesanan di Kampus UBSI Cikarang. <Link href="/catalog">Lihat Catalog</Link></div>
