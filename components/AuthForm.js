@@ -11,7 +11,7 @@ export default function AuthForm({ mode }) {
   const go = () => {
     // Tahap 2: ganti dengan supabase.auth.signInWithOAuth({ provider: "google" })
     const m = login({ name: "Pengguna Google", email: "demo@gmail.com", avatar: "" });
-    r.push(m.wa === "verified" ? next : "/verify-phone?next=" + encodeURIComponent(next));
+    r.push(m.profile ? next : "/lengkapi-data?next=" + encodeURIComponent(next));
   };
   return (
     <div className="pay">

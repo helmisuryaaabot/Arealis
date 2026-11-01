@@ -13,7 +13,7 @@ export default function Catalog() {
   const r = useRouter();
   const order = (p) => {
     if (!user) r.push("/login?need=1&next=/catalog");
-    else if (user.wa !== "verified") r.push("/verify-phone?next=/catalog");
+    else if (!user.profile) r.push("/lengkapi-data?next=/catalog");
     else setSel(p);
   };
   return (

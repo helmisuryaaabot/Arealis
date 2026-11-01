@@ -2,8 +2,8 @@
 import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "./AuthProvider";
-// true jika halaman boleh tampil. Belum login: ke /login. needWa: wajib sudah verifikasi WhatsApp.
-export default function useRequireAuth(needWa = false, next) {
+// true jika halaman boleh tampil. Belum login: ke /login. needProfile: wajib sudah mengisi formulir data diri.
+export default function useRequireAuth(needProfile = false, next) {
   const { user, ready } = useAuth();
   const r = useRouter();
   const path = usePathname();
@@ -11,7 +11,7 @@ export default function useRequireAuth(needWa = false, next) {
   useEffect(() => {
     if (!ready) return;
     if (!user) r.replace("/login?need=1&next=" + to);
-    else if (needWa && user.wa !== "verified") r.replace("/verify-phone?next=" + to);
-  }, [ready, user, needWa, r, to]);
-  return ready && !!user && (!needWa || user.wa === "verified");
+    else if (needProfile && !user.profile) r.replace("/lengkapi-data?next=" + to);
+  }, [ready, user, needProfile, r, to]);
+  return ready && !!user && (!needProfile || !!user.profile);
 }

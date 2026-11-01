@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 import { orders } from "../../data/orders";
 import { fmt } from "../../data/products";
 import useRequireAuth from "../../components/useRequireAuth";
@@ -16,6 +17,7 @@ export default function Dashboard() {
     <section className="wrap">
       <h1>Pesanan saya</h1>
       <p className="muted">Masuk sebagai {user.name} ({user.email}). Daftar pesanan di bawah masih data contoh.</p>
+      {user.profile ? <p className="spec">Data diri: {user.profile.phone}, {user.profile.vill}, {user.profile.city}. <Link href="/lengkapi-data?next=/dashboard">Ubah data diri</Link></p> : <p className="note">Lengkapi data diri dulu supaya bisa Pre-Order. <Link href="/lengkapi-data?next=/dashboard">Isi data diri</Link></p>}
       <div className="tabs">
         {["Proses", "Siap Diambil"].map((t) => (
           <button key={t} className={tab === t ? "on" : ""} onClick={() => setTab(t)}>{t} ({mine.filter((o) => o.status === t).length})</button>

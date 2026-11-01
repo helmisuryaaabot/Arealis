@@ -4,10 +4,10 @@ import { orders, STATUS } from "../../data/orders";
 import { fmt } from "../../data/products";
 import useRequireAuth from "../../components/useRequireAuth";
 import { useAuth } from "../../components/AuthProvider";
-const TABS = ["Ringkasan", "Pesanan", "Verifikasi WA", "Produksi"];
-const waudit = [
-  { name: "Gita Maharani", email: "gita@gmail.com", code: "ARL-4821" },
-  { name: "Hadi Kurniawan", email: "hadi@gmail.com", code: "ARL-1937" },
+const TABS = ["Ringkasan", "Pesanan", "Pengguna", "Produksi"];
+const demoUsers = [
+  { name: "Budi Santoso", email: "budi@gmail.com", phone: "+6281200000001", prov: "JAWA BARAT", city: "KAB. BEKASI", dist: "CIKARANG SELATAN", vill: "CIBUBUR", rt: "02", rw: "05", addr: "Perumahan Contoh Indah, Blok C No. 12" },
+  { name: "Citra Lestari", email: "citra@gmail.com", phone: "+6281200000002", prov: "JAWA BARAT", city: "KAB. BEKASI", dist: "CIKARANG UTARA", vill: "SIMPANGAN", rt: "01", rw: "03", addr: "Jl. Melati, No. 7" },
 ];
 function download(name, rows) {
   const csv = "\uFEFF" + rows.map((a) => a.map((v) => '"' + v + '"').join(",")).join("\n");
@@ -21,7 +21,7 @@ export default function Admin() {
   const { user } = useAuth();
   const [tab, setTab] = useState("Ringkasan");
   const [rows, setRows] = useState(orders);
-  const [pend, setPend] = useState(waudit);
+  const [users] = useState(demoUsers);
   const [q, setQ] = useState("");
   const [f, setF] = useState("Semua");
   if (!ok) return <section className="wrap"><p>Memuat...</p></section>;
@@ -37,7 +37,7 @@ export default function Admin() {
       <h1>Panel admin</h1>
       <p className="note">Tampilan contoh. Data asli tersambung di tahap 2.</p>
       <div className="tabs">
-        {TABS.map((t) => <button key={t} className={tab === t ? "on" : ""} onClick={() => setTab(t)}>{t}{t === "Verifikasi WA" && pend.length ? " (" + pend.length + ")" : ""}</button>)}
+        {TABS.map((t) => <button key={t} className={tab === t ? "on" : ""} onClick={() => setTab(t)}>{t}</button>)}
       </div>
 
       {tab === "Ringkasan" && (
@@ -81,15 +81,18 @@ export default function Admin() {
         </>
       )}
 
-      {tab === "Verifikasi WA" && (
+      {tab === "Pengguna" && (
         <>
-          <p className="muted">Akun yang sudah mengirim pesan verifikasi ke WhatsApp admin. Cocokkan kodenya dengan isi chat, lalu konfirmasi.</p>
-          {pend.length ? pend.map((p) => (
-            <div className="card row" key={p.code}>
-              <span>{p.name}, {p.email}, kode {p.code}</span>
-              <button className="btn" onClick={() => setPend(pend.filter((x) => x !== p))}>Konfirmasi</button>
-            </div>
-          )) : <p className="muted">Tidak ada permintaan verifikasi.</p>}
+          <p className="muted">Semua akun yang sudah mengisi data diri. Dipakai untuk memeriksa pemesan dan mencegah pesanan fiktif.</p>
+          <div className="row">
+            <button className="btn" onClick={() => download("arealis-pengguna.csv", [["Nama", "Email", "Telepon", "Provinsi", "Kota", "Kecamatan", "Desa", "RT", "RW", "Alamat"], ...users.map((u) => [u.name, u.email, u.phone, u.prov, u.city, u.dist, u.vill, u.rt, u.rw, u.addr])])}>Export CSV pengguna</button>
+          </div>
+          <div className="scroll">
+            <table>
+              <thead><tr><th>Nama</th><th>Email</th><th>Telepon</th><th>Kecamatan</th><th>Kota</th><th>Alamat</th></tr></thead>
+              <tbody>{users.map((u) => <tr key={u.email}><td>{u.name}</td><td>{u.email}</td><td>{u.phone}</td><td>{u.dist}</td><td>{u.city}</td><td>{u.addr}, RT {u.rt}/RW {u.rw}, {u.vill}</td></tr>)}</tbody>
+            </table>
+          </div>
         </>
       )}
 

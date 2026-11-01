@@ -33,6 +33,14 @@ export default function Home() {
         <div className="grid">{steps.map((s, i) => <div className="card" key={s}><div className="sigil">{i + 1}</div><h3>{s}</h3></div>)}</div>
       </section>
       <section className="wrap">
+        <div className="promo" style={{ background: "linear-gradient(135deg,#1b1530,#3a2a63)" }}>
+          <i>☾</i>
+          <h3>Dari The Codex</h3>
+          <p>[Teaser lore singkat dari tim konten.] Setiap simbol pada relik kami tercatat dalam jurnal seorang peneliti yang menjelajahi hutan, telaga, dan langit malam.</p>
+          <div><Link className="btn white" href="/lore">Baca The Codex</Link></div>
+        </div>
+      </section>
+      <section className="wrap">
         <div className="sechead"><h2>Pertanyaan umum</h2></div>
         {faq.map(([q, a]) => <details key={q}><summary>{q}</summary><p className="muted">{a}</p></details>)}
       </section>
