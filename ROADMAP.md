@@ -1,6 +1,6 @@
 # Roadmap AREALIS
 
-## Sedang dikerjakan: tampilan web (tahap 1)
+## Tahap 1: tampilan web (selesai, tinggal isi konten)
 Sudah ada: Home (banner, teaser Codex), Lore (kartu arcana), Catalog, About Us, login Google (demo), formulir data diri, Dashboard pengguna, halaman pembayaran (demo), panel admin (demo), dark mode, tombol sosial.
 
 Masih perlu diselesaikan di tahap tampilan:
@@ -9,7 +9,7 @@ Masih perlu diselesaikan di tahap tampilan:
 - Cek tampilan di HP dan perbaiki yang janggal.
 
 ## Setelah tampilan selesai
-### Tahap 2: Supabase
+### Tahap 2: Supabase (sedang dikerjakan: login Google dan data diri dulu)
 - Buat project, tabel profiles (data diri dan peran admin), products, orders.
 - Login Google asli (foto profil Gmail ikut tampil), simpan formulir data diri ke profiles.
 - Aturan keamanan (RLS): user hanya melihat datanya sendiri, admin melihat semua. Halaman /admin dikunci untuk admin.

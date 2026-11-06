@@ -1,14 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "../../lib/supabase";
 import { orders, STATUS } from "../../data/orders";
 import { fmt } from "../../data/products";
 import useRequireAuth from "../../components/useRequireAuth";
 import { useAuth } from "../../components/AuthProvider";
 const TABS = ["Ringkasan", "Pesanan", "Pengguna", "Produksi"];
-const demoUsers = [
-  { name: "Budi Santoso", email: "budi@gmail.com", phone: "+6281200000001", prov: "JAWA BARAT", city: "KAB. BEKASI", dist: "CIKARANG SELATAN", vill: "CIBUBUR", rt: "02", rw: "05", addr: "Perumahan Contoh Indah, Blok C No. 12" },
-  { name: "Citra Lestari", email: "citra@gmail.com", phone: "+6281200000002", prov: "JAWA BARAT", city: "KAB. BEKASI", dist: "CIKARANG UTARA", vill: "SIMPANGAN", rt: "01", rw: "03", addr: "Jl. Melati, No. 7" },
-];
 function download(name, rows) {
   const csv = "\uFEFF" + rows.map((a) => a.map((v) => '"' + v + '"').join(",")).join("\n");
   const a = document.createElement("a");
@@ -21,7 +18,13 @@ export default function Admin() {
   const { user } = useAuth();
   const [tab, setTab] = useState("Ringkasan");
   const [rows, setRows] = useState(orders);
-  const [users] = useState(demoUsers);
+  const [users, setUsers] = useState([]);
+  useEffect(() => {
+    if (!ok || !user || !user.isAdmin || !supabase) return;
+    supabase.from("profiles").select("*").order("created_at", { ascending: false }).then(({ data }) =>
+      setUsers((data || []).map((p) => ({ name: p.full_name, email: p.email, phone: p.phone, prov: p.province, city: p.city, dist: p.district, vill: p.village, rt: p.rt, rw: p.rw, addr: p.complex + (p.block ? ", Blok " + p.block : "") + " No. " + p.house_number })))
+    );
+  }, [ok, user]);
   const [q, setQ] = useState("");
   const [f, setF] = useState("Semua");
   if (!ok) return <section className="wrap"><p>Memuat...</p></section>;

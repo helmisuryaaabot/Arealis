@@ -34,7 +34,7 @@ function Form() {
     setLists((l) => { const n = { ...l }; rest.forEach((k) => (n[k] = [])); return n; });
     if (item && rest[0]) getList(rest[0], item.id).then((d) => setLists((l) => ({ ...l, [rest[0]]: d }))).catch(() => setManual(true));
   };
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
     const digits = f.phone.replace(/[\s-]/g, "").replace(/^\+/, "").replace(/^0/, "62");
     if (f.name.trim().length < 3) return setErr("Isi nama lengkap.");
@@ -43,7 +43,8 @@ function Form() {
     if (!/^\d{1,3}$/.test(f.rt) || !/^\d{1,3}$/.test(f.rw)) return setErr("RT dan RW diisi dengan angka.");
     if (!f.complex.trim() || !f.number.trim()) return setErr("Isi nama perumahan atau jalan, dan nomor rumah.");
     if (!f.ok) return setErr("Centang pernyataan bahwa data yang diisi sudah benar.");
-    saveProfile({ name: f.name.trim(), phone: "+" + digits, prov: loc.prov.name, city: loc.city.name, dist: loc.dist.name, vill: loc.vill.name, rt: f.rt, rw: f.rw, complex: f.complex.trim(), block: f.block.trim(), number: f.number.trim(), at: new Date().toISOString() });
+    const { error } = await saveProfile({ name: f.name.trim(), phone: "+" + digits, prov: loc.prov.name, city: loc.city.name, dist: loc.dist.name, vill: loc.vill.name, rt: f.rt, rw: f.rw, complex: f.complex.trim(), block: f.block.trim(), number: f.number.trim(), at: new Date().toISOString() });
+    if (error) return setErr(error.code === "23505" ? "Nomor telepon ini sudah dipakai akun lain." : "Gagal menyimpan: " + error.message);
     r.push(next);
   };
   if (!ready || !user) return <p>Memuat...</p>;

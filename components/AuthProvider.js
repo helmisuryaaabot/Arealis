@@ -1,30 +1,41 @@
 "use client";
-// MODE DEMO: sesi dan data diri disimpan di browser (localStorage). Di tahap 2 diganti Supabase Auth + tabel profiles.
+// Autentikasi Supabase (Google). Data diri disimpan di tabel profiles, admin dicek lewat tabel admins.
 import { createContext, useContext, useState, useEffect } from "react";
+import { supabase } from "../lib/supabase";
 const Ctx = createContext(null);
 export const useAuth = () => useContext(Ctx);
-const K = "arealis_user", P = "arealis_profiles";
-const ADMINS = ["demo@gmail.com"]; // demo; tahap 2: peran admin dari Supabase
-const profiles = () => { try { return JSON.parse(localStorage.getItem(P) || "{}"); } catch { return {}; } };
+const toProfile = (p) => p && { name: p.full_name, phone: p.phone, prov: p.province, city: p.city, dist: p.district, vill: p.village, rt: p.rt, rw: p.rw, complex: p.complex, block: p.block || "", number: p.house_number };
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [ready, setReady] = useState(false);
   useEffect(() => {
-    try { setUser(JSON.parse(localStorage.getItem(K) || "null")); } catch {}
-    setReady(true);
+    if (!supabase) { setReady(true); return; }
+    const load = async (session) => {
+      if (!session) { setUser(null); setReady(true); return; }
+      const u = session.user;
+      const [pr, ad] = await Promise.all([
+        supabase.from("profiles").select("*").eq("id", u.id).maybeSingle(),
+        supabase.from("admins").select("user_id").eq("user_id", u.id).maybeSingle(),
+      ]);
+      const meta = u.user_metadata || {};
+      setUser({ id: u.id, email: u.email, name: meta.full_name || meta.name || u.email.split("@")[0], avatar: meta.avatar_url || meta.picture || "", profile: toProfile(pr.data), isAdmin: !!ad.data });
+      setReady(true);
+    };
+    supabase.auth.getSession().then(({ data }) => load(data.session));
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => { setTimeout(() => load(session), 0); });
+    return () => sub.subscription.unsubscribe();
   }, []);
-  const save = (u) => {
-    setUser(u);
-    try { u ? localStorage.setItem(K, JSON.stringify(u)) : localStorage.removeItem(K); } catch {}
+  const loginWithGoogle = async (next) => {
+    if (!supabase) return { error: { message: "Supabase belum dikonfigurasi (cek file .env.local)." } };
+    try { sessionStorage.setItem("arealis_next", next || "/catalog"); } catch {}
+    return supabase.auth.signInWithOAuth({ provider: "google", options: { redirectTo: window.location.origin + "/auth/callback" } });
   };
-  const login = (u) => {
-    const m = { ...u, profile: profiles()[u.email] || null, isAdmin: ADMINS.includes(u.email) };
-    save(m);
-    return m;
+  const logout = async () => { if (supabase) await supabase.auth.signOut(); setUser(null); };
+  const saveProfile = async (p) => {
+    const row = { id: user.id, email: user.email, full_name: p.name, phone: p.phone, province: p.prov, city: p.city, district: p.dist, village: p.vill, rt: p.rt, rw: p.rw, complex: p.complex, block: p.block || null, house_number: p.number, updated_at: new Date().toISOString() };
+    const { error } = await supabase.from("profiles").upsert(row);
+    if (!error) setUser((u) => ({ ...u, profile: p }));
+    return { error };
   };
-  const saveProfile = (p) => {
-    try { localStorage.setItem(P, JSON.stringify({ ...profiles(), [user.email]: p })); } catch {}
-    save({ ...user, profile: p });
-  };
-  return <Ctx.Provider value={{ user, ready, login, logout: () => save(null), saveProfile }}>{children}</Ctx.Provider>;
+  return <Ctx.Provider value={{ user, ready, loginWithGoogle, logout, saveProfile }}>{children}</Ctx.Provider>;
 }

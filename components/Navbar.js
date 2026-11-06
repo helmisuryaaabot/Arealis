@@ -28,7 +28,7 @@ export default function Navbar() {
           {ready && (user ? (
             <>
               <Link href="/dashboard" className="profile" title="Buka dashboard saya">
-                {user.avatar ? <img className="ava" src={user.avatar} alt="" /> : <span className="ava">{user.name[0]}</span>}
+                {user.avatar ? <img className="ava" src={user.avatar} alt="" referrerPolicy="no-referrer" /> : <span className="ava">{user.name[0]}</span>}
                 <span className="pname">{user.name}</span>
               </Link>
               <button className="btn ghost out" onClick={out}>Log Out</button>
